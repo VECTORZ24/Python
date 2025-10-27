@@ -1,0 +1,41 @@
+##Applying Bootstrapping on my Porject data
+
+#importing my Prject data
+import pandas as pd
+data=pd.read_csv("Example.csv")
+
+#selecting a data column I will work on
+column='EngineV'
+#deleting nan values from column values
+values=data[column].dropna().values
+
+# we will make 100 bootstrap samples
+n_bootstrap=100
+boot_means=[]
+import numpy as np
+for i in range(n_bootstrap):
+    sample = np.random.choice(values, size=len(values), replace=True)
+    boot_means.append(np.mean(sample))
+boot_means = np.array(boot_means)
+boot_means
+
+#estimating the mean of the population from bootstrap
+mean_estimate = np.mean(boot_means)
+conf_interval = np.percentile(boot_means, [2.5, 97.5])  # 95% CI
+
+print(f"Bootstrap mean estimate: {mean_estimate:.2f}")
+print(f"95% confidence interval: {conf_interval}")
+
+#let we compare the population mean and the estimatd mean
+print(f'Population mean: {np.mean(data['EngineV'])}')
+print(f'Difference:{np.mean(data['EngineV'])-mean_estimate}')
+#It's approximately the same result
+
+#Now, we visualizethe bootstrap distribution 
+import matplotlib.pyplot as plt
+
+plt.hist(boot_means, bins=30, edgecolor='k')
+plt.title("Bootstrap Distribution of the Mean")
+plt.xlabel("Mean values")
+plt.ylabel("Frequency")
+plt.show()
