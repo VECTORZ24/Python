@@ -1,0 +1,8 @@
+def Verif_Majus(Ch):
+  Majus=True
+  i=0
+  while (i<len(Ch) and Majus==True):
+    if(not('A'<=Ch[i]<='Z')):
+      Majus=False
+    i+=1
+  return Majus
